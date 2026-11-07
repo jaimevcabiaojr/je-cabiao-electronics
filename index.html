@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="J&amp;E Cabiao Electronics Repair Shop - trusted repair services for TVs, appliances, and electronics in Cabiao."
+    />
+    <title>J&amp;E Cabiao Electronics Repair Shop</title>
+    <style>
+      :root {
+        --primary: #0f766e;
+        --primary-dark: #115e59;
+        --accent: #f59e0b;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+
+      .container {
+        width: min(1100px, 92%);
+        margin: 0 auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(255, 255, 255, 0.96);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(6px);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 0;
+      }
+
+      .brand {
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: var(--primary-dark);
+        text-decoration: none;
+        letter-spacing: 0.2px;
+      }
+
+      .brand span {
+        color: var(--accent);
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+      }
+
+      nav a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      nav a:hover {
+        color: var(--primary);
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #134e4a 0%, #0f766e 55%, #0d9488 100%);
+        color: #fff;
+        padding: 5.5rem 0 4.5rem;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        line-height: 1.15;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
+        max-width: 58ch;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.8rem 1.2rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #1f2937;
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .hero-card {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 16px;
+        padding: 1.5rem;
+      }
+
+      .hero-card h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .hero-card ul {
+        list-style: none;
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .hero-card li::before {
+        content: "✓ ";
+        color: #fde68a;
+        font-weight: 700;
+      }
+
+      section {
+        padding: 4.5rem 0;
+      }
+
+      .section-title {
+        font-size: 1.9rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .section-lead {
+        color: var(--muted);
+        text-align: center;
+        max-width: 62ch;
+        margin: 0 auto 2rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.4rem;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: #ccfbf1;
+        color: var(--primary-dark);
+        font-size: 1.25rem;
+        margin-bottom: 0.85rem;
+      }
+
+      .card h3 {
+        margin-bottom: 0.45rem;
+        font-size: 1.1rem;
+      }
+
+      .card p {
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .about {
+        background: #fff;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 1.5rem;
+        align-items: start;
+      }
+
+      .about h2,
+      .contact h2 {
+        text-align: left;
+        margin-bottom: 0.75rem;
+      }
+
+      .about p {
+        color: var(--muted);
+        margin-bottom: 0.9rem;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+      }
+
+      .stat {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1rem;
+      }
+
+      .stat strong {
+        display: block;
+        color: var(--primary-dark);
+        font-size: 1.05rem;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .contact-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+
+      .contact-list {
+        list-style: none;
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .contact-list li {
+        padding: 0.85rem 1rem;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+
+      .contact-list strong {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 0.15rem;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+
+      .contact-list a {
+        color: var(--primary-dark);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .cta {
+        background: var(--primary-dark);
+        color: #fff;
+        border-radius: 16px;
+        padding: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+
+      .cta p {
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      footer {
+        padding: 1.5rem 0 2rem;
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 860px) {
+        .hero-grid,
+        .about-grid,
+        .contact-wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a class="brand" href="#home">J&amp;E <span>Cabiao</span> Electronics Repair</a>
+        <nav aria-label="Main">
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">Trusted Local Electronics Repair in Cabiao</div>
+            <h1>Fast, Honest Repairs for the Electronics You Rely On</h1>
+            <p>
+              J&amp;E Cabiao Electronics Repair Shop provides dependable
+              troubleshooting and repair for TVs, home appliances, and everyday
+              electronics. We focus on clear diagnosis, fair service, and getting
+              your devices working again.
+            </p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#contact">Request a Repair</a>
+              <a class="btn btn-secondary" href="#services">View Services</a>
+            </div>
+          </div>
+          <aside class="hero-card" aria-label="Why choose us">
+            <h2>Why Customers Choose Us</h2>
+            <ul>
+              <li>Careful diagnostics before repair</li>
+              <li>Service for common home electronics</li>
+              <li>Clear communication and practical advice</li>
+              <li>Local, friendly repair support</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="container">
+          <h2 class="section-title">Our Services</h2>
+          <p class="section-lead">
+            We handle a range of electronics and appliance repair needs. Contact
+            us to confirm your device, issue, and availability.
+          </p>
+          <div class="grid">
+            <article class="card">
+              <div class="icon" aria-hidden="true">📺</div>
+              <h3>TV Repair</h3>
+              <p>
+                Troubleshooting and repair for common TV issues such as no power,
+                no display, sound problems, and connection concerns.
+              </p>
+            </article>
+            <article class="card">
+              <div class="icon" aria-hidden="true">🔌</div>
+              <h3>Appliance Electronics</h3>
+              <p>
+                Repair support for electronic components in household appliances,
+                helping extend the life of equipment you use every day.
+              </p>
+            </article>
+            <article class="card">
+              <div class="icon" aria-hidden="true">🔧</div>
+              <h3>Diagnostics &amp; Maintenance</h3>
+              <p>
+                Careful inspection to identify the cause of the problem and
+                recommend practical repair or maintenance options.
+              </p>
+            </article>
+            <article class="card">
+              <div class="icon" aria-hidden="true">⚡</div>
+              <h3>General Electronics Repair</h3>
+              <p>
+                Assistance with various electronic devices. Bring your item in or
+                reach out with details so we can assess the issue.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="container about-grid">
+          <div>
+            <h2 class="section-title">About J&amp;E Cabiao Electronics Repair Shop</h2>
+            <p>
+              J&amp;E Cabiao Electronics Repair Shop serves the Cabiao community
+              with practical electronics repair services. We understand how
+              important your devices are at home and work, so we aim to provide
+              straightforward service you can trust.
+            </p>
+            <p>
+              Whether you need help with a TV, appliance electronics, or another
+              device, we take time to check the issue and explain your options.
+              For the most accurate assistance, share your device brand, model,
+              and the problem you are experiencing.
+            </p>
+          </div>
+          <div class="stats" aria-label="Service highlights">
+            <div class="stat">
+              <strong>Local Service</strong>
+              <span>Convenient support for Cabiao and nearby customers.</span>
+            </div>
+            <div class="stat">
+              <strong>Honest Assessment</strong>
+              <span>Clear diagnosis and practical repair recommendations.</span>
+            </div>
+            <div class="stat">
+              <strong>Electronics Focus</strong>
+              <span>TVs, appliances, and common electronic devices.</span>
+            </div>
+            <div class="stat">
+              <strong>Customer Care</strong>
+              <span>Friendly communication from check-in to pickup.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="container contact-wrap">
+          <div>
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-lead" style="text-align: left; margin: 0">
+              Update the details below with your shop's phone number, address,
+              and business hours.
+            </p>
+            <ul class="contact-list">
+              <li>
+                <strong>Phone</strong>
+                <a href="tel:+630000000000">+63 000 000 0000</a>
+              </li>
+              <li>
+                <strong>Location</strong>
+                Cabiao, Nueva Ecija, Philippines
+              </li>
+              <li>
+                <strong>Business Hours</strong>
+                Monday &ndash; Saturday, 8:00 AM &ndash; 5:00 PM
+              </li>
+              <li>
+                <strong>Services</strong>
+                TV repair, appliance electronics, diagnostics, and general
+                electronics repair
+              </li>
+            </ul>
+          </div>
+          <div class="cta">
+            <h3>Need a repair quote?</h3>
+            <p>
+              Call or visit with your device details: brand, model, and the issue
+              you noticed. We’ll help you understand the next best step.
+            </p>
+            <div>
+              <a class="btn btn-primary" href="tel:+630000000000">Call Now</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; <span id="year"></span> J&amp;E Cabiao Electronics Repair Shop. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
