@@ -1,0 +1,18 @@
+{
+  "name": "jv-cabiao-item-intake",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "copy:web": "node scripts/copy-web.mjs",
+    "android:sync": "npm run copy:web && cap sync android",
+    "android:debug": "npm run android:sync && cd android && ./gradlew assembleDebug && cd .. && node scripts/copy-apk.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "7.6.10",
+    "@capacitor/core": "7.6.10"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.6.10"
+  }
+}

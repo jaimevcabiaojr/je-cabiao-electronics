@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <title>JV Cabiao Electronics Shop | Item Intake</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --border: #475569;
+        --surface: #1e293b;
+        --bg: #0f172a;
+        --header: #333333;
+        --accent: #38bdf8;
+        --accent-hover: #7dd3fc;
+        --soft-accent: #164e63;
+        --red: #f87171;
+        font-family: system-ui, sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        overflow-x: clip;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+      [hidden] { display: none !important; }
+
+      .page {
+        width: min(100% - 40px, 1040px);
+        margin: 0 auto;
+        padding: 0 0 64px;
+      }
+
+      header {
+        width: 100%;
+        background: var(--header);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        min-height: 80px;
+        width: min(100% - 40px, 1040px);
+        margin: 0 auto;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 13px;
+        background: var(--accent);
+        color: var(--bg);
+        font-size: 21px;
+      }
+
+      .brand-name { color: #ffffff; font-size: 18px; font-weight: 700; }
+      .brand-name span { color: var(--accent); }
+      .brand-caption { margin-top: 3px; color: var(--muted); font-size: 12px; }
+
+      .local-note {
+        color: var(--text);
+        font-size: 12px;
+        text-align: right;
+      }
+
+      .intro {
+        margin: 24px 0 22px;
+        padding: 1.5rem 0 .5rem;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 8px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      h1 { margin: 0; font-size: clamp(26px, 4vw, 34px); letter-spacing: -.045em; line-height: 1.15; }
+      .intro p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+
+      .view-tabs {
+        display: flex;
+        max-width: 720px;
+        gap: 5px;
+        margin: 0 auto 16px;
+        padding: 4px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface);
+      }
+
+      .view-tab {
+        display: flex;
+        min-height: 42px;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 650;
+      }
+
+      .view-tab[aria-selected="true"] { background: var(--accent); color: var(--bg); }
+      .view-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+      .layout {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      .panel {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        box-shadow: 0 5px 20px rgb(0 0 0 / 14%);
+      }
+
+      .panel-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 22px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .panel-heading h2 { margin: 0; font-size: 15px; letter-spacing: -.01em; }
+      .step { color: var(--muted); font-size: 12px; }
+      form { padding: 22px; }
+      .field { margin-bottom: 20px; }
+      label, .field-label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 650; }
+      .required { color: var(--accent); }
+      .agreement {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #111c30;
+        cursor: pointer;
+      }
+
+      .agreement input {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 auto;
+        margin: 2px 0 0;
+        accent-color: var(--accent);
+      }
+
+      .agreement strong { display: block; margin-bottom: 4px; font-size: 13px; }
+      .agreement-copy { display: block; color: var(--muted); font-size: 12px; font-weight: 400; line-height: 1.5; }
+
+      input[type="text"], input[type="tel"] {
+        width: 100%;
+        height: 46px;
+        padding: 0 13px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        outline: none;
+        background: var(--bg);
+        color: var(--text);
+        transition: border-color .15s, box-shadow .15s;
+      }
+
+      input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgb(56 189 248 / 18%); }
+      input::placeholder { color: #64748b; }
+      .help { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+      .button {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 13px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        background: var(--surface);
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 650;
+        text-decoration: none;
+      }
+
+      .button:hover { background: #334155; }
+      .primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--bg);
+      }
+
+      .primary:hover { border-color: var(--accent-hover); background: var(--accent-hover); }
+      .save-button { width: 100%; min-height: 47px; margin-top: 3px; font-size: 13px; }
+      .text-link { margin-top: 10px; }
+      .button:disabled { cursor: wait; opacity: .65; }
+
+      .message { min-height: 18px; margin: 11px 0 0; font-size: 12px; line-height: 1.45; }
+      .message:empty { display: none; }
+      .message.error { color: var(--red); }
+      .message.success { color: var(--accent); }
+
+      .records-heading { display: flex; align-items: center; gap: 9px; }
+      .count {
+        display: grid;
+        min-width: 23px;
+        height: 23px;
+        padding: 0 6px;
+        place-items: center;
+        border-radius: 20px;
+        background: #334155;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .record-list { padding: 6px 20px 14px; }
+      .empty-state { padding: 34px 12px; color: var(--muted); font-size: 13px; line-height: 1.6; text-align: center; }
+      .record {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 32px;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .record:last-child { border-bottom: 0; }
+      .record-name { overflow: hidden; font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+      .record-phone { margin-top: 4px; color: var(--muted); font-size: 12px; }
+      .record-item { margin-top: 5px; color: var(--accent); font-size: 12px; font-weight: 600; }
+      .record-agreement { margin-top: 5px; color: var(--muted); font-size: 11px; }
+      .record-date { margin-top: 5px;       color: var(--muted); font-size: 11px; }
+      .delete-button {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .delete-button:hover { background: #3f2029; color: var(--red); }
+
+      @media (max-width: 720px) {
+        .page { width: min(100% - 28px, 520px); }
+        .header-inner {
+          flex-direction: column;
+          justify-content: center;
+          gap: 4px;
+          padding: 12px 20px;
+        }
+        .local-note { text-align: center; }
+        .intro { padding-top: 1rem; }
+      }
+
+      @media (max-width: 390px) {
+        .page { width: min(100% - 22px, 520px); }
+        .local-note { max-width: none; line-height: 1.4; }
+        form { padding: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">✦</div>
+          <div>
+            <div class="brand-name"><span>JV Cabiao</span> Electronics Shop</div>
+            <div class="brand-caption">Customer &amp; item records</div>
+          </div>
+        </div>
+        <div class="local-note">Private to this device<br>Saved in this browser</div>
+      </div>
+    </header>
+    <main class="page">
+      <section class="intro">
+        <div class="eyebrow">Customer item intake</div>
+        <h1>New item record</h1>
+        <p>Enter the customer's contact details and appliance or item.</p>
+      </section>
+
+      <div class="view-tabs" role="tablist" aria-label="Customer record views" id="view-tabs">
+        <button class="view-tab" id="customer-tab" type="button" role="tab" aria-controls="customer-panel" aria-selected="true">Customer input</button>
+        <button class="view-tab" id="records-tab" type="button" role="tab" aria-controls="records-panel" aria-selected="false" tabindex="-1">
+          Saved records <span class="count" id="record-count">0</span>
+        </button>
+      </div>
+      <p class="message" id="form-message" role="status"></p>
+
+      <div class="layout">
+        <section class="panel" id="customer-panel" role="tabpanel" aria-labelledby="customer-tab">
+          <div class="panel-heading">
+            <h2 id="form-title">Customer &amp; item details</h2>
+            <span class="step">All fields required</span>
+          </div>
+          <form id="intake-form">
+            <div class="field">
+              <label for="customer-name">Customer name <span class="required">*</span></label>
+              <input id="customer-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alex Morgan" required maxlength="100">
+            </div>
+            <div class="field">
+              <label for="customer-phone">Cellphone number <span class="required">*</span></label>
+              <input id="customer-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. +63 0999 1234567" required maxlength="30">
+              <p class="help">Include the country code if needed.</p>
+            </div>
+            <div class="field">
+              <label for="item-name">Appliance / item <span class="required">*</span></label>
+              <input id="item-name" name="item" type="text" autocomplete="off" placeholder="e.g. Samsung TV, refrigerator" required maxlength="100">
+            </div>
+            <div class="field">
+              <label class="agreement" for="storage-agreement">
+                <input id="storage-agreement" name="storageAgreement" type="checkbox" required>
+                <span>
+                  <strong>Storage Agreement <span class="required">*</span></strong>
+                  <span class="agreement-copy">I understand this item will be stored free of charge for up to 7 days.</span>
+                </span>
+              </label>
+            </div>
+            <button class="button primary save-button" id="save-button" type="submit" disabled>Save item record</button>
+          </form>
+        </section>
+
+        <section class="panel" id="records-panel" role="tabpanel" aria-labelledby="records-tab" hidden>
+          <div class="panel-heading">
+            <div class="records-heading">
+              <h2 id="records-title">Saved records</h2>
+            </div>
+            <span class="step">On this device</span>
+          </div>
+          <div class="record-list" id="record-list" aria-live="polite">
+            <div class="empty-state">No records yet.<br>Saved items will appear here.</div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      (() => {
+        const databaseName = "item-intake";
+        const storeName = "records";
+        const form = document.getElementById("intake-form");
+        const nameInput = document.getElementById("customer-name");
+        const phoneInput = document.getElementById("customer-phone");
+        const itemInput = document.getElementById("item-name");
+        const agreementInput = document.getElementById("storage-agreement");
+        const customerTab = document.getElementById("customer-tab");
+        const recordsTab = document.getElementById("records-tab");
+        const customerPanel = document.getElementById("customer-panel");
+        const recordsPanel = document.getElementById("records-panel");
+        const viewTabs = document.getElementById("view-tabs");
+        const saveButton = document.getElementById("save-button");
+        const message = document.getElementById("form-message");
+        const recordList = document.getElementById("record-list");
+        const recordCount = document.getElementById("record-count");
+        let database;
+        let databaseReady = false;
+
+        function setMessage(text, kind = "") {
+          message.textContent = text;
+          message.className = `message${kind ? ` ${kind}` : ""}`;
+        }
+
+        function updateSaveButton() {
+          saveButton.disabled = !databaseReady || !agreementInput.checked;
+        }
+
+        function showView(view, moveFocus = false) {
+          const showCustomer = view === "customer";
+          customerTab.setAttribute("aria-selected", String(showCustomer));
+          customerTab.tabIndex = showCustomer ? 0 : -1;
+          recordsTab.setAttribute("aria-selected", String(!showCustomer));
+          recordsTab.tabIndex = showCustomer ? -1 : 0;
+          customerPanel.hidden = !showCustomer;
+          recordsPanel.hidden = showCustomer;
+          if (moveFocus) (showCustomer ? customerTab : recordsTab).focus();
+        }
+
+        function openDatabase() {
+          return new Promise((resolve, reject) => {
+            const request = indexedDB.open(databaseName, 1);
+            request.onupgradeneeded = () => {
+              const store = request.result.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+              store.createIndex("createdAt", "createdAt");
+            };
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || new Error("Could not open local storage."));
+          });
+        }
+
+        function transaction(mode, action) {
+          return new Promise((resolve, reject) => {
+            const tx = database.transaction(storeName, mode);
+            const request = action(tx.objectStore(storeName));
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || new Error("The record could not be saved."));
+            tx.onabort = () => reject(tx.error || new Error("The storage operation was interrupted."));
+          });
+        }
+
+        function formatDate(date) {
+          return new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(date);
+        }
+
+        async function renderRecords() {
+          const records = await transaction("readonly", (store) => store.getAll());
+          records.sort((a, b) => b.createdAt - a.createdAt);
+          recordCount.textContent = String(records.length);
+          recordList.replaceChildren();
+          if (!records.length) {
+            const empty = document.createElement("div");
+            empty.className = "empty-state";
+            empty.innerHTML = "No records yet.<br>Saved items will appear here.";
+            recordList.append(empty);
+            return;
+          }
+
+          for (const record of records) {
+            const row = document.createElement("article");
+            row.className = "record";
+            const details = document.createElement("div");
+            const customer = document.createElement("div");
+            customer.className = "record-name";
+            customer.textContent = record.name;
+            const phone = document.createElement("div");
+            phone.className = "record-phone";
+            phone.textContent = record.phone;
+            const item = document.createElement("div");
+            item.className = "record-item";
+            item.textContent = `Appliance / item: ${record.item || "Not specified"}`;
+            const agreement = document.createElement("div");
+            agreement.className = "record-agreement";
+            agreement.textContent = record.storageAgreement
+              ? "Storage agreement accepted: free for up to 7 days"
+              : "Storage agreement: Not recorded";
+            const date = document.createElement("div");
+            date.className = "record-date";
+            date.textContent = formatDate(new Date(record.createdAt));
+            const textMessage = `Hi ${record.name}, this is JV Cabiao Electronics Shop. We've recorded your ${record.item || "item"}. As agreed, storage is free of charge for up to 7 days. Thank you!`;
+            const recipient = record.phone.replace(/[^\d+]/g, "");
+            const textLink = document.createElement("a");
+            textLink.className = "button primary text-link";
+            textLink.href = `sms:${recipient}?body=${encodeURIComponent(textMessage)}`;
+            textLink.textContent = "Text customer";
+            textLink.setAttribute("aria-label", `Prepare a text message for ${record.name}`);
+            details.append(customer, phone, item, agreement, date, textLink);
+            const remove = document.createElement("button");
+            remove.className = "delete-button";
+            remove.type = "button";
+            remove.title = `Delete record for ${record.name}`;
+            remove.setAttribute("aria-label", `Delete record for ${record.name}`);
+            remove.textContent = "×";
+            remove.addEventListener("click", async () => {
+              try {
+                await transaction("readwrite", (store) => store.delete(record.id));
+                await renderRecords();
+              } catch (error) {
+                setMessage(`Could not delete record: ${error.message}`, "error");
+              }
+            });
+            row.append(details, remove);
+            recordList.append(row);
+          }
+        }
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const name = nameInput.value.trim();
+          const phone = phoneInput.value.trim();
+          const item = itemInput.value.trim();
+          if (!name || !phone || !item || !agreementInput.checked) {
+            setMessage("Complete all fields and accept the storage agreement.", "error");
+            return;
+          }
+          saveButton.disabled = true;
+          setMessage("");
+          try {
+            await transaction("readwrite", (store) => store.add({
+              name,
+              phone,
+              item,
+              storageAgreement: agreementInput.checked,
+              createdAt: Date.now()
+            }));
+            await renderRecords();
+            form.reset();
+            setMessage("Item record saved. A text message is ready in Saved records.", "success");
+            showView("records", true);
+          } catch (error) {
+            setMessage(`Could not save this record: ${error.message}`, "error");
+          } finally {
+            updateSaveButton();
+          }
+        });
+
+        agreementInput.addEventListener("change", updateSaveButton);
+        customerTab.addEventListener("click", () => showView("customer"));
+        recordsTab.addEventListener("click", () => showView("records"));
+        viewTabs.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowRight" || event.key === "Home") {
+            event.preventDefault();
+            showView(event.key === "Home" ? "customer" : "records", true);
+          } else if (event.key === "ArrowLeft" || event.key === "End") {
+            event.preventDefault();
+            showView(event.key === "End" ? "records" : "customer", true);
+          }
+        });
+
+        openDatabase()
+          .then((db) => {
+            database = db;
+            return renderRecords().then(() => {
+              databaseReady = true;
+              updateSaveButton();
+            });
+          })
+          .catch((error) => {
+            setMessage(`Local storage is unavailable: ${error.message}`, "error");
+            updateSaveButton();
+          });
+      })();
+    </script>
+  </body>
+</html>

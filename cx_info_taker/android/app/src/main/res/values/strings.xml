@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">JV Cabiao Item Intake</string>
+    <string name="title_activity_main">JV Cabiao Item Intake</string>
+    <string name="package_name">com.jvcabiao.itemintake</string>
+    <string name="custom_url_scheme">com.jvcabiao.itemintake</string>
+</resources>
