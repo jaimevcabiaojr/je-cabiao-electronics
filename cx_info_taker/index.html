@@ -469,7 +469,8 @@
             const date = document.createElement("div");
             date.className = "record-date";
             date.textContent = formatDate(new Date(record.createdAt));
-            const textMessage = `Hi ${record.name}, this is JV Cabiao Electronics Shop. We've recorded your ${record.item || "item"}. As agreed, storage is free of charge for up to 7 days. Thank you!`;
+            const formattedDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(new Date(record.createdAt));
+            const textMessage = `From: J V Cabiao Electronic Shop\n\nHi ${record.name}, your ${record.item || "item"} received at our main shop was accepted on ${formattedDate} and will have free storage for 7 days. Please reply with your name or nickname to verify the availability of this number. We will send you the result of our free diagnostic/check-up once done. Thank you for choosing JV Cabiao Electronics and God bless.`;
             const recipient = record.phone.replace(/[^\d+]/g, "");
             const textLink = document.createElement("a");
             textLink.className = "button primary text-link";
