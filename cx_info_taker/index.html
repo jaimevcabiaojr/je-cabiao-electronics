@@ -8,17 +8,17 @@
     <style>
       :root {
         color-scheme: dark;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-        --border: #475569;
-        --surface: #1e293b;
-        --bg: #0f172a;
-        --header: #333333;
+        --text: #e8f0fa;
+        --muted: #9aacc2;
+        --border: #2b3d55;
+        --surface: #122137;
+        --bg: #08111f;
+        --header: #0b1524;
         --accent: #38bdf8;
         --accent-hover: #7dd3fc;
-        --soft-accent: #164e63;
-        --red: #f87171;
-        font-family: system-ui, sans-serif;
+        --soft-accent: #12364d;
+        --red: #fb7185;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
       * { box-sizing: border-box; }
@@ -27,25 +27,29 @@
         margin: 0;
         min-width: 320px;
         overflow-x: clip;
-        background: var(--bg);
+        background:
+          radial-gradient(ellipse at 50% -230px, rgb(56 189 248 / 12%), transparent 68%),
+          var(--bg);
         color: var(--text);
         line-height: 1.6;
       }
 
-      button, input { font: inherit; }
+      button, input, textarea { font: inherit; }
       button { cursor: pointer; }
       [hidden] { display: none !important; }
+      button:focus-visible, a:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; }
 
       .page {
         width: min(100% - 40px, 1040px);
         margin: 0 auto;
-        padding: 0 0 64px;
+        padding: 0 0 48px;
       }
 
       header {
         width: 100%;
-        background: var(--header);
-        box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+        border-bottom: 1px solid rgb(148 163 184 / 12%);
+        background: linear-gradient(110deg, #0d192a, #101c2c 55%, #0b1524);
+        box-shadow: 0 8px 26px rgb(0 0 0 / 22%);
       }
 
       .header-inner {
@@ -53,7 +57,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 20px;
-        min-height: 80px;
+        min-height: 82px;
         width: min(100% - 40px, 1040px);
         margin: 0 auto;
       }
@@ -69,67 +73,99 @@
         width: 42px;
         height: 42px;
         place-items: center;
-        border-radius: 13px;
-        background: var(--accent);
-        color: var(--bg);
+        border: 1px solid rgb(255 255 255 / 22%);
+        border-radius: 14px;
+        background: linear-gradient(145deg, #67d5ff, #0ea5e9);
+        color: #082033;
         font-size: 21px;
+        box-shadow: 0 5px 16px rgb(14 165 233 / 26%);
       }
 
-      .brand-name { color: #ffffff; font-size: 18px; font-weight: 700; }
+      .brand-name { color: #f8fbff; font-size: 17px; font-weight: 750; letter-spacing: -.025em; }
       .brand-name span { color: var(--accent); }
-      .brand-caption { margin-top: 3px; color: var(--muted); font-size: 12px; }
-
       .local-note {
-        color: var(--text);
-        font-size: 12px;
-        text-align: right;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 12px;
+        border: 1px solid rgb(148 163 184 / 18%);
+        border-radius: 12px;
+        background: rgb(255 255 255 / 3%);
       }
+
+      .local-note-indicator {
+        width: 8px;
+        height: 8px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 0 4px rgb(74 222 128 / 12%);
+      }
+
+      .local-note-text { color: var(--muted); font-size: 11px; line-height: 1.35; }
 
       .intro {
-        margin: 24px 0 22px;
-        padding: 1.5rem 0 .5rem;
-      }
-
-      .eyebrow {
-        display: inline-block;
-        margin-bottom: 8px;
-        color: var(--accent);
-        font-size: 12px;
-        font-weight: 650;
-      }
-
-      h1 { margin: 0; font-size: clamp(26px, 4vw, 34px); letter-spacing: -.045em; line-height: 1.15; }
-      .intro p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
-
-      .view-tabs {
-        display: flex;
         max-width: 720px;
-        gap: 5px;
-        margin: 0 auto 16px;
-        padding: 4px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: var(--surface);
+        margin: 28px auto 20px;
+        padding: 12px 0 4px;
       }
 
-      .view-tab {
+      h1 { margin: 0; font-size: clamp(29px, 4vw, 36px); letter-spacing: -.05em; line-height: 1.12; }
+      .intro p { max-width: 560px; margin: 11px 0 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+      .page-tools {
         display: flex;
-        min-height: 42px;
-        flex: 1;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
         gap: 8px;
-        padding: 7px 12px;
+        max-width: 720px;
+        margin: 24px auto 16px;
+      }
+
+      .mode-switch-label {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+
+      .mode-switch {
+        display: inline-flex;
+        gap: 5px;
+        padding: 5px;
+        border: 1px solid #334155;
+        border-radius: 14px;
+        background: #111c30;
+        box-shadow: 0 5px 16px rgb(0 0 0 / 18%);
+      }
+
+      .mode-switch button {
+        min-width: 112px;
+        min-height: 40px;
+        padding: 0 16px;
         border: 0;
-        border-radius: 8px;
+        border-radius: 10px;
         background: transparent;
         color: var(--muted);
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 650;
+        transition: background .15s, color .15s, box-shadow .15s;
       }
 
-      .view-tab[aria-selected="true"] { background: var(--accent); color: var(--bg); }
-      .view-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .mode-switch button[aria-pressed="true"] {
+        background: linear-gradient(135deg, var(--accent), #0ea5e9);
+        color: #082f49;
+        box-shadow: 0 2px 7px rgb(56 189 248 / 28%);
+      }
+
+      .mode-switch button:not(:disabled):not([aria-pressed="true"]):hover {
+        background: rgb(148 163 184 / 10%);
+        color: var(--text);
+      }
+
+      .mode-switch button:disabled { cursor: not-allowed; opacity: .45; }
+      .mode-switch button:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 2px; }
 
       .layout {
         max-width: 720px;
@@ -139,36 +175,41 @@
       .panel {
         overflow: hidden;
         border: 1px solid var(--border);
-        border-radius: 14px;
-        background: var(--surface);
-        box-shadow: 0 5px 20px rgb(0 0 0 / 14%);
+        border-radius: 18px;
+        background: linear-gradient(145deg, rgb(20 37 59 / 98%), rgb(15 29 47 / 98%));
+        box-shadow: 0 16px 42px rgb(0 0 0 / 25%), inset 0 1px 0 rgb(255 255 255 / 3%);
       }
 
       .panel-heading {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 20px 22px;
-        border-bottom: 1px solid var(--border);
+        gap: 14px;
+        padding: 19px 24px;
+        border-bottom: 1px solid rgb(148 163 184 / 12%);
+        background: rgb(255 255 255 / 2%);
       }
 
-      .panel-heading h2 { margin: 0; font-size: 15px; letter-spacing: -.01em; }
-      .step { color: var(--muted); font-size: 12px; }
-      form { padding: 22px; }
-      .field { margin-bottom: 20px; }
-      label, .field-label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 650; }
+      .panel-heading h2 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -.015em; }
+      .step { color: var(--muted); font-size: 11px; }
+      form { padding: 24px; }
+      .field { margin-bottom: 21px; }
+      label, .field-label { display: block; margin-bottom: 8px; color: #d9e5f3; font-size: 12px; font-weight: 650; letter-spacing: .005em; }
       .required { color: var(--accent); }
       .agreement {
         display: flex;
         align-items: flex-start;
         gap: 11px;
-        padding: 14px;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        background: #111c30;
+        margin: 0;
+        padding: 15px;
+        border: 1px solid #30445e;
+        border-radius: 12px;
+        background: rgb(8 17 31 / 48%);
         cursor: pointer;
+        transition: border-color .15s, background .15s;
       }
 
+      .agreement:hover { border-color: #3c617f; background: rgb(56 189 248 / 4%); }
       .agreement input {
         width: 18px;
         height: 18px;
@@ -177,24 +218,26 @@
         accent-color: var(--accent);
       }
 
-      .agreement strong { display: block; margin-bottom: 4px; font-size: 13px; }
+      .agreement strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 12px; }
       .agreement-copy { display: block; color: var(--muted); font-size: 12px; font-weight: 400; line-height: 1.5; }
 
-      input[type="text"], input[type="tel"] {
+      input[type="text"], input[type="tel"], input[type="password"], textarea {
         width: 100%;
-        height: 46px;
-        padding: 0 13px;
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        padding: 0 14px;
+        border: 1px solid #30445e;
+        border-radius: 11px;
         outline: none;
-        background: var(--bg);
+        background: rgb(7 16 29 / 72%);
         color: var(--text);
-        transition: border-color .15s, box-shadow .15s;
+        transition: border-color .16s, box-shadow .16s, background .16s;
       }
 
-      input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgb(56 189 248 / 18%); }
-      input::placeholder { color: #64748b; }
-      .help { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+      input[type="text"], input[type="tel"], input[type="password"] { height: 48px; }
+      textarea { min-height: 104px; padding-top: 11px; padding-bottom: 11px; resize: vertical; }
+      input:hover, textarea:hover { border-color: #47627f; }
+      input:focus, textarea:focus { border-color: var(--accent); background: #0a192a; box-shadow: 0 0 0 4px rgb(56 189 248 / 12%); }
+      input::placeholder, textarea::placeholder { color: #71839b; }
+      .help { margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
 
       .button {
         display: inline-flex;
@@ -202,74 +245,107 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding: 0 13px;
-        border: 1px solid var(--border);
-        border-radius: 9px;
-        background: var(--surface);
+        padding: 0 15px;
+        border: 1px solid #3a506b;
+        border-radius: 10px;
+        background: #1a2c43;
         color: var(--text);
         font-size: 12px;
         font-weight: 650;
         text-decoration: none;
+        transition: transform .15s, border-color .15s, background .15s, box-shadow .15s;
       }
 
-      .button:hover { background: #334155; }
+      .button:hover { transform: translateY(-1px); border-color: #5b7695; background: #213953; }
       .primary {
-        border-color: var(--accent);
-        background: var(--accent);
-        color: var(--bg);
+        border-color: transparent;
+        background: linear-gradient(135deg, #55caf8, #0ea5e9);
+        color: #06243a;
+        box-shadow: 0 5px 14px rgb(14 165 233 / 16%);
       }
 
-      .primary:hover { border-color: var(--accent-hover); background: var(--accent-hover); }
-      .save-button { width: 100%; min-height: 47px; margin-top: 3px; font-size: 13px; }
-      .text-link { margin-top: 10px; }
-      .button:disabled { cursor: wait; opacity: .65; }
+      .primary:hover { border-color: transparent; background: linear-gradient(135deg, #7dd3fc, #38bdf8); box-shadow: 0 7px 18px rgb(14 165 233 / 24%); }
+      .save-button { width: 100%; min-height: 49px; margin-top: 2px; border-radius: 12px; font-size: 13px; }
+      .button:disabled { cursor: not-allowed; opacity: .55; transform: none; box-shadow: none; }
 
       .message { min-height: 18px; margin: 11px 0 0; font-size: 12px; line-height: 1.45; }
       .message:empty { display: none; }
       .message.error { color: var(--red); }
       .message.success { color: var(--accent); }
+      #form-message:not(:empty) { max-width: 720px; margin: 0 auto 16px; padding: 11px 14px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface); }
+      #form-message.error { border-color: rgb(251 113 133 / 35%); background: rgb(251 113 133 / 7%); }
+      #form-message.success { border-color: rgb(56 189 248 / 30%); background: rgb(56 189 248 / 6%); }
 
-      .records-heading { display: flex; align-items: center; gap: 9px; }
-      .count {
+      #success-dialog {
+        width: min(390px, calc(100% - 32px));
+        max-width: 390px;
+        max-height: calc(100% - 32px);
+        padding: 0;
+        overflow: auto;
+        border: 1px solid #3b5068;
+        border-radius: 18px;
+        background: linear-gradient(145deg, #172b43, #0f1d30);
+        color: var(--text);
+        box-shadow: 0 24px 70px rgb(0 0 0 / 48%);
+      }
+
+      #success-dialog::backdrop { background: rgb(2 8 23 / 72%); backdrop-filter: blur(3px); }
+      .success-dialog-content { padding: 25px; text-align: center; }
+      .success-dialog-check {
         display: grid;
-        min-width: 23px;
-        height: 23px;
-        padding: 0 6px;
+        width: 44px;
+        height: 44px;
         place-items: center;
-        border-radius: 20px;
-        background: #334155;
-        color: var(--muted);
-        font-size: 11px;
+        margin: 0 auto 13px;
+        border: 1px solid rgb(74 222 128 / 28%);
+        border-radius: 14px;
+        background: rgb(74 222 128 / 10%);
+        color: #4ade80;
+        font-size: 23px;
         font-weight: 700;
       }
 
-      .record-list { padding: 6px 20px 14px; }
-      .empty-state { padding: 34px 12px; color: var(--muted); font-size: 13px; line-height: 1.6; text-align: center; }
+      .success-dialog-content h2 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+      .success-dialog-content p { margin: 9px 0 20px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+      .success-dialog-content .button { width: 100%; min-height: 45px; }
+
+      .staff-access { padding: 24px; }
+      .staff-access h3 { margin: 0; font-size: 15px; }
+      .staff-access p { margin: 7px 0 19px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+      .staff-access .field { max-width: 360px; }
+      .record-list { padding: 12px 20px 20px; }
+      .empty-state { padding: 38px 16px; color: var(--muted); font-size: 13px; line-height: 1.7; text-align: center; }
       .record {
         display: grid;
         grid-template-columns: minmax(0, 1fr) 32px;
         align-items: center;
         gap: 12px;
-        padding: 14px 0;
-        border-bottom: 1px solid var(--border);
+        margin: 8px 0;
+        padding: 16px;
+        border: 1px solid rgb(148 163 184 / 14%);
+        border-radius: 13px;
+        background: rgb(7 16 29 / 38%);
       }
 
-      .record:last-child { border-bottom: 0; }
+      .record:last-child { margin-bottom: 0; }
       .record-name { overflow: hidden; font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-      .record-phone { margin-top: 4px; color: var(--muted); font-size: 12px; }
-      .record-item { margin-top: 5px; color: var(--accent); font-size: 12px; font-weight: 600; }
-      .record-agreement { margin-top: 5px; color: var(--muted); font-size: 11px; }
-      .record-date { margin-top: 5px;       color: var(--muted); font-size: 11px; }
+      .record-phone { margin-top: 4px; color: var(--muted); font-size: 11px; }
+      .record-item { margin-top: 8px; color: var(--accent); font-size: 12px; font-weight: 650; }
+      .record-issue { margin-top: 6px; color: #d9e5f3; font-size: 12px; overflow-wrap: anywhere; white-space: pre-wrap; }
+      .record-agreement { margin-top: 8px; color: var(--muted); font-size: 11px; }
+      .record-date { margin-top: 5px; color: var(--muted); font-size: 11px; }
+      .record-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
       .delete-button {
         display: grid;
         width: 32px;
         height: 32px;
         place-items: center;
         border: 0;
-        border-radius: 8px;
+        border-radius: 9px;
         background: transparent;
         color: var(--muted);
         font-size: 17px;
+        transition: background .15s, color .15s;
       }
 
       .delete-button:hover { background: #3f2029; color: var(--red); }
@@ -279,17 +355,24 @@
         .header-inner {
           flex-direction: column;
           justify-content: center;
-          gap: 4px;
-          padding: 12px 20px;
+          gap: 11px;
+          padding: 14px 10px 16px;
         }
-        .local-note { text-align: center; }
-        .intro { padding-top: 1rem; }
+        .local-note { padding: 8px 11px; }
+        .intro { margin-top: 20px; padding-top: 8px; }
+        .page-tools { margin-top: 22px; }
       }
 
       @media (max-width: 390px) {
         .page { width: min(100% - 22px, 520px); }
-        .local-note { max-width: none; line-height: 1.4; }
-        form { padding: 18px; }
+        .header-inner { gap: 10px; }
+        .brand { gap: 10px; }
+        .brand-mark { width: 38px; height: 38px; }
+        .brand-name { font-size: 15px; }
+        .panel-heading { padding: 17px 18px; }
+        form, .staff-access { padding: 19px; }
+        .record-list { padding: 10px 12px 14px; }
+        .record { padding: 13px; }
       }
     </style>
   </head>
@@ -300,29 +383,24 @@
           <div class="brand-mark" aria-hidden="true">✦</div>
           <div>
             <div class="brand-name"><span>JV Cabiao</span> Electronics Shop</div>
-            <div class="brand-caption">Customer &amp; item records</div>
           </div>
         </div>
-        <div class="local-note">Private to this device<br>Saved in this browser</div>
+        <div class="local-note">
+          <span class="local-note-indicator" aria-hidden="true"></span>
+          <span class="local-note-text">Saved in this browser</span>
+        </div>
       </div>
     </header>
     <main class="page">
       <section class="intro">
-        <div class="eyebrow">Customer item intake</div>
-        <h1>New item record</h1>
-        <p>Enter the customer's contact details and appliance or item.</p>
+        <h1 id="intro-title">Receive Form</h1>
+        <p id="intro-description">Enter the customer's contact details and appliance or item.</p>
       </section>
 
-      <div class="view-tabs" role="tablist" aria-label="Customer record views" id="view-tabs">
-        <button class="view-tab" id="customer-tab" type="button" role="tab" aria-controls="customer-panel" aria-selected="true">Customer input</button>
-        <button class="view-tab" id="records-tab" type="button" role="tab" aria-controls="records-panel" aria-selected="false" tabindex="-1">
-          Saved records <span class="count" id="record-count">0</span>
-        </button>
-      </div>
       <p class="message" id="form-message" role="status"></p>
 
       <div class="layout">
-        <section class="panel" id="customer-panel" role="tabpanel" aria-labelledby="customer-tab">
+        <section class="panel" id="customer-panel">
           <div class="panel-heading">
             <h2 id="form-title">Customer &amp; item details</h2>
             <span class="step">All fields required</span>
@@ -342,6 +420,11 @@
               <input id="item-name" name="item" type="text" autocomplete="off" placeholder="e.g. Samsung TV, refrigerator" required maxlength="100">
             </div>
             <div class="field">
+              <label for="item-issue">Item issue</label>
+              <textarea id="item-issue" name="issue" placeholder="Describe the problem or symptoms" maxlength="500"></textarea>
+              <p class="help">Optional. Up to 500 characters.</p>
+            </div>
+            <div class="field">
               <label class="agreement" for="storage-agreement">
                 <input id="storage-agreement" name="storageAgreement" type="checkbox" required>
                 <span>
@@ -354,19 +437,59 @@
           </form>
         </section>
 
-        <section class="panel" id="records-panel" role="tabpanel" aria-labelledby="records-tab" hidden>
+        <section class="panel" id="staff-panel" hidden>
           <div class="panel-heading">
-            <div class="records-heading">
-              <h2 id="records-title">Saved records</h2>
-            </div>
-            <span class="step">On this device</span>
+            <h2 id="staff-panel-title">Staff records</h2>
           </div>
-          <div class="record-list" id="record-list" aria-live="polite">
+          <div class="staff-access" id="staff-access">
+            <form id="create-staff-pin-form" hidden>
+              <h3>Set up staff access</h3>
+              <p>Create a six-digit PIN before customers use this device. This PIN is only for opening staff records.</p>
+              <div class="field">
+                <label for="new-staff-pin">Create staff PIN</label>
+                <input id="new-staff-pin" type="password" inputmode="numeric" autocomplete="new-password" pattern="[0-9]{6}" minlength="6" maxlength="6" required>
+              </div>
+              <div class="field">
+                <label for="confirm-staff-pin">Confirm staff PIN</label>
+                <input id="confirm-staff-pin" type="password" inputmode="numeric" autocomplete="new-password" pattern="[0-9]{6}" minlength="6" maxlength="6" required>
+              </div>
+              <button class="button primary" type="submit">Set PIN</button>
+              <p class="message" id="create-pin-message" role="status"></p>
+            </form>
+            <form id="unlock-staff-pin-form" hidden>
+              <h3>Staff access</h3>
+              <p>Enter the staff PIN to view saved records.</p>
+              <div class="field">
+                <label for="staff-pin">Six-digit PIN</label>
+                <input id="staff-pin" type="password" inputmode="numeric" autocomplete="current-password" pattern="[0-9]{6}" minlength="6" maxlength="6" required>
+              </div>
+              <button class="button primary" type="submit">Open staff records</button>
+              <p class="message" id="unlock-pin-message" role="status"></p>
+            </form>
+          </div>
+          <div class="record-list" id="record-list" aria-live="polite" hidden>
             <div class="empty-state">No records yet.<br>Saved items will appear here.</div>
           </div>
         </section>
       </div>
+
+      <div class="page-tools">
+        <span class="mode-switch-label">Switch view</span>
+        <div class="mode-switch" role="group" aria-label="Choose view">
+          <button id="customer-mode-button" type="button" aria-pressed="true">Customer</button>
+          <button id="staff-mode-button" type="button" aria-pressed="false">Staff</button>
+        </div>
+      </div>
     </main>
+
+    <dialog id="success-dialog" aria-labelledby="success-dialog-title" aria-describedby="success-dialog-message">
+      <div class="success-dialog-content">
+        <div class="success-dialog-check" aria-hidden="true">✓</div>
+        <h2 id="success-dialog-title">Thank you!</h2>
+        <p id="success-dialog-message"></p>
+        <button class="button primary" id="success-dialog-ok" type="button">OK, start again</button>
+      </div>
+    </dialog>
 
     <script>
       (() => {
@@ -376,45 +499,61 @@
         const nameInput = document.getElementById("customer-name");
         const phoneInput = document.getElementById("customer-phone");
         const itemInput = document.getElementById("item-name");
+        const issueInput = document.getElementById("item-issue");
         const agreementInput = document.getElementById("storage-agreement");
-        const customerTab = document.getElementById("customer-tab");
-        const recordsTab = document.getElementById("records-tab");
+        const introTitle = document.getElementById("intro-title");
+        const introDescription = document.getElementById("intro-description");
+        const successDialog = document.getElementById("success-dialog");
+        const successDialogMessage = document.getElementById("success-dialog-message");
+        const successDialogOkButton = document.getElementById("success-dialog-ok");
         const customerPanel = document.getElementById("customer-panel");
-        const recordsPanel = document.getElementById("records-panel");
-        const viewTabs = document.getElementById("view-tabs");
+        const staffPanel = document.getElementById("staff-panel");
+        const customerModeButton = document.getElementById("customer-mode-button");
+        const staffModeButton = document.getElementById("staff-mode-button");
+        const staffAccess = document.getElementById("staff-access");
+        const createStaffPinForm = document.getElementById("create-staff-pin-form");
+        const unlockStaffPinForm = document.getElementById("unlock-staff-pin-form");
+        const createPinMessage = document.getElementById("create-pin-message");
+        const unlockPinMessage = document.getElementById("unlock-pin-message");
         const saveButton = document.getElementById("save-button");
         const message = document.getElementById("form-message");
         const recordList = document.getElementById("record-list");
-        const recordCount = document.getElementById("record-count");
+        const staffPinStorageKey = `${databaseName}-staff-pin`;
         let database;
         let databaseReady = false;
+        let staffPinConfigured = false;
 
         function setMessage(text, kind = "") {
           message.textContent = text;
           message.className = `message${kind ? ` ${kind}` : ""}`;
         }
 
+        successDialogOkButton.addEventListener("click", () => successDialog.close());
+        successDialog.addEventListener("close", () => nameInput.focus());
+
+        function updateModeSwitch(mode) {
+          const staffMode = mode === "staff";
+          customerModeButton.setAttribute("aria-pressed", String(!staffMode));
+          staffModeButton.setAttribute("aria-pressed", String(staffMode));
+          customerModeButton.disabled = !staffPinConfigured;
+          introTitle.textContent = staffMode ? "Saved item records" : "Receive Form";
+          introDescription.textContent = staffMode
+            ? "View and manage records saved on this device."
+            : "Enter the customer's contact details and appliance or item.";
+        }
+
         function updateSaveButton() {
           saveButton.disabled = !databaseReady || !agreementInput.checked;
         }
 
-        function showView(view, moveFocus = false) {
-          const showCustomer = view === "customer";
-          customerTab.setAttribute("aria-selected", String(showCustomer));
-          customerTab.tabIndex = showCustomer ? 0 : -1;
-          recordsTab.setAttribute("aria-selected", String(!showCustomer));
-          recordsTab.tabIndex = showCustomer ? -1 : 0;
-          customerPanel.hidden = !showCustomer;
-          recordsPanel.hidden = showCustomer;
-          if (moveFocus) (showCustomer ? customerTab : recordsTab).focus();
-        }
-
         function openDatabase() {
           return new Promise((resolve, reject) => {
-            const request = indexedDB.open(databaseName, 1);
+            const request = indexedDB.open(databaseName);
             request.onupgradeneeded = () => {
-              const store = request.result.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
-              store.createIndex("createdAt", "createdAt");
+              if (!request.result.objectStoreNames.contains(storeName)) {
+                const store = request.result.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+                store.createIndex("createdAt", "createdAt");
+              }
             };
             request.onsuccess = () => resolve(request.result);
             request.onerror = () => reject(request.error || new Error("Could not open local storage."));
@@ -425,10 +564,57 @@
           return new Promise((resolve, reject) => {
             const tx = database.transaction(storeName, mode);
             const request = action(tx.objectStore(storeName));
-            request.onsuccess = () => resolve(request.result);
+            let result;
+            request.onsuccess = () => {
+              result = request.result;
+            };
             request.onerror = () => reject(request.error || new Error("The record could not be saved."));
+            tx.oncomplete = () => resolve(result);
+            tx.onerror = () => reject(tx.error || new Error("The storage operation failed."));
             tx.onabort = () => reject(tx.error || new Error("The storage operation was interrupted."));
           });
+        }
+
+        function removeLegacyProtectedRecords() {
+          return new Promise((resolve, reject) => {
+            const stores = [storeName];
+            const hasSettings = database.objectStoreNames.contains("settings");
+            if (hasSettings) stores.push("settings");
+            const tx = database.transaction(stores, "readwrite");
+            const recordStore = tx.objectStore(storeName);
+            const recordsRequest = recordStore.getAll();
+            let removedCount = 0;
+            recordsRequest.onsuccess = () => {
+              for (const record of recordsRequest.result) {
+                if (record.encrypted) {
+                  recordStore.delete(record.id);
+                  removedCount += 1;
+                }
+              }
+            };
+            if (hasSettings) tx.objectStore("settings").delete("password");
+            tx.oncomplete = () => resolve(removedCount);
+            tx.onerror = () => reject(tx.error || new Error("Could not remove previous protected records."));
+            tx.onabort = () => reject(tx.error || new Error("The storage operation was interrupted."));
+          });
+        }
+
+        function encodeBase64(value) {
+          return btoa(String.fromCharCode(...value));
+        }
+
+        function decodeBase64(value) {
+          return Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
+        }
+
+        async function hashStaffPin(pin, salt) {
+          const material = await crypto.subtle.importKey("raw", new TextEncoder().encode(pin), "PBKDF2", false, ["deriveBits"]);
+          const hash = await crypto.subtle.deriveBits(
+            { name: "PBKDF2", salt, iterations: 150000, hash: "SHA-256" },
+            material,
+            256
+          );
+          return encodeBase64(new Uint8Array(hash));
         }
 
         function formatDate(date) {
@@ -438,8 +624,8 @@
         async function renderRecords() {
           const records = await transaction("readonly", (store) => store.getAll());
           records.sort((a, b) => b.createdAt - a.createdAt);
-          recordCount.textContent = String(records.length);
           recordList.replaceChildren();
+          recordList.hidden = false;
           if (!records.length) {
             const empty = document.createElement("div");
             empty.className = "empty-state";
@@ -461,6 +647,9 @@
             const item = document.createElement("div");
             item.className = "record-item";
             item.textContent = `Appliance / item: ${record.item || "Not specified"}`;
+            const issue = document.createElement("div");
+            issue.className = "record-issue";
+            issue.textContent = `Issue: ${record.issue || "Not provided"}`;
             const agreement = document.createElement("div");
             agreement.className = "record-agreement";
             agreement.textContent = record.storageAgreement
@@ -473,11 +662,38 @@
             const textMessage = `Greetings from J V Cabiao Electronics!\n\nWe received your ${record.item || "item"} at our main shop on ${formattedDate}. As a reminder, your unit comes with 7 days of free storage.\n\nKindly reply with your name or nickname so we can verify and link this number to your service record. We will update you with the diagnostic results as soon as the check-up is finished.\n\nThank you for trusting us, and God bless!`;
             const recipient = record.phone.replace(/[^\d+]/g, "");
             const textLink = document.createElement("a");
-            textLink.className = "button primary text-link";
+            textLink.className = "button primary";
             textLink.href = `sms:${recipient}?body=${encodeURIComponent(textMessage)}`;
             textLink.textContent = "Text customer";
             textLink.setAttribute("aria-label", `Prepare a text message for ${record.name}`);
-            details.append(customer, phone, item, agreement, date, textLink);
+            const copyButton = document.createElement("button");
+            copyButton.className = "button";
+            copyButton.type = "button";
+            copyButton.textContent = "Copy record";
+            copyButton.setAttribute("aria-label", `Copy record for ${record.name}`);
+            copyButton.addEventListener("click", async () => {
+              try {
+                if (!navigator.clipboard?.writeText) {
+                  throw new Error("Clipboard access is unavailable in this browser.");
+                }
+                const copiedRecord = [
+                  `Customer: ${record.name}`,
+                  `Cellphone: ${record.phone}`,
+                  `Item: ${record.item || "Not specified"}`,
+                  `Issue: ${record.issue || "Not provided"}`,
+                  `Storage agreement: ${record.storageAgreement ? "Accepted (free storage up to 7 days)" : "Not recorded"}`,
+                  `Received: ${formatDate(new Date(record.createdAt))}`
+                ].join("\n");
+                await navigator.clipboard.writeText(copiedRecord);
+                setMessage(`Copied ${record.name}'s record to the clipboard.`, "success");
+              } catch (error) {
+                setMessage(`Could not copy the record: ${error.message}`, "error");
+              }
+            });
+            const actions = document.createElement("div");
+            actions.className = "record-actions";
+            actions.append(copyButton, textLink);
+            details.append(customer, phone, item, issue, agreement, date, actions);
             const remove = document.createElement("button");
             remove.className = "delete-button";
             remove.type = "button";
@@ -497,6 +713,110 @@
           }
         }
 
+        async function openStaffRecords() {
+          await renderRecords();
+          updateModeSwitch("staff");
+          customerPanel.hidden = true;
+          staffPanel.hidden = false;
+          staffAccess.hidden = true;
+        }
+
+        staffModeButton.addEventListener("click", () => {
+          setMessage("");
+          updateModeSwitch("staff");
+          customerPanel.hidden = true;
+          staffPanel.hidden = false;
+          staffAccess.hidden = false;
+          recordList.hidden = true;
+          recordList.replaceChildren();
+          createPinMessage.textContent = "";
+          unlockPinMessage.textContent = "";
+          try {
+            staffPinConfigured = localStorage.getItem(staffPinStorageKey) !== null;
+            updateModeSwitch("staff");
+            createStaffPinForm.hidden = staffPinConfigured;
+            unlockStaffPinForm.hidden = !staffPinConfigured;
+          } catch (error) {
+            setMessage(`Could not check staff access: ${error.message}`, "error");
+          }
+        });
+
+        customerModeButton.addEventListener("click", () => {
+          if (!staffPinConfigured) return;
+          setMessage("");
+          recordList.replaceChildren();
+          recordList.hidden = true;
+          staffAccess.hidden = false;
+          createStaffPinForm.hidden = true;
+          unlockStaffPinForm.hidden = true;
+          staffPanel.hidden = true;
+          customerPanel.hidden = false;
+          updateModeSwitch("customer");
+        });
+
+        createStaffPinForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const pin = document.getElementById("new-staff-pin").value;
+          const confirmation = document.getElementById("confirm-staff-pin").value;
+          createPinMessage.textContent = "";
+          createPinMessage.className = "message";
+          if (!/^\d{6}$/.test(pin)) {
+            createPinMessage.textContent = "Enter a six-digit PIN.";
+            createPinMessage.className = "message error";
+            return;
+          }
+          if (pin !== confirmation) {
+            createPinMessage.textContent = "The PINs do not match.";
+            createPinMessage.className = "message error";
+            return;
+          }
+          const submit = createStaffPinForm.querySelector('button[type="submit"]');
+          submit.disabled = true;
+          try {
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const pinSettings = {
+              salt: encodeBase64(salt),
+              hash: await hashStaffPin(pin, salt)
+            };
+            localStorage.setItem(staffPinStorageKey, JSON.stringify(pinSettings));
+            staffPinConfigured = true;
+            updateModeSwitch("staff");
+            createStaffPinForm.reset();
+            await openStaffRecords();
+          } catch (error) {
+            createPinMessage.textContent = `Could not set the staff PIN: ${error.message}`;
+            createPinMessage.className = "message error";
+          } finally {
+            submit.disabled = false;
+          }
+        });
+
+        unlockStaffPinForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const pin = document.getElementById("staff-pin").value;
+          unlockPinMessage.textContent = "";
+          unlockPinMessage.className = "message";
+          const submit = unlockStaffPinForm.querySelector('button[type="submit"]');
+          submit.disabled = true;
+          try {
+            const storedPin = localStorage.getItem(staffPinStorageKey);
+            if (!storedPin) throw new Error("Staff PIN is not set. Return to the intake and set up staff access.");
+            const pinSettings = JSON.parse(storedPin);
+            if (!pinSettings.salt || !pinSettings.hash) throw new Error("Staff PIN settings are invalid.");
+            const enteredHash = await hashStaffPin(pin, decodeBase64(pinSettings.salt));
+            if (enteredHash !== pinSettings.hash) throw new Error("Incorrect PIN.");
+            unlockStaffPinForm.reset();
+            await openStaffRecords();
+          } catch (error) {
+            recordList.replaceChildren();
+            recordList.hidden = true;
+            unlockPinMessage.textContent = error.message;
+            unlockPinMessage.className = "message error";
+          } finally {
+            submit.disabled = false;
+          }
+        });
+
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
           const name = nameInput.value.trim();
@@ -513,13 +833,13 @@
               name,
               phone,
               item,
+              issue: issueInput.value.trim(),
               storageAgreement: agreementInput.checked,
               createdAt: Date.now()
             }));
-            await renderRecords();
             form.reset();
-            setMessage("Item record saved. A text message is ready in Saved records.", "success");
-            showView("records", true);
+            successDialogMessage.textContent = `Thank you, ${name}! Your item record has been saved. Please wait for a text from us.`;
+            successDialog.showModal();
           } catch (error) {
             setMessage(`Could not save this record: ${error.message}`, "error");
           } finally {
@@ -528,23 +848,24 @@
         });
 
         agreementInput.addEventListener("change", updateSaveButton);
-        customerTab.addEventListener("click", () => showView("customer"));
-        recordsTab.addEventListener("click", () => showView("records"));
-        viewTabs.addEventListener("keydown", (event) => {
-          if (event.key === "ArrowRight" || event.key === "Home") {
-            event.preventDefault();
-            showView(event.key === "Home" ? "customer" : "records", true);
-          } else if (event.key === "ArrowLeft" || event.key === "End") {
-            event.preventDefault();
-            showView(event.key === "End" ? "records" : "customer", true);
-          }
-        });
 
         openDatabase()
           .then((db) => {
             database = db;
-            return renderRecords().then(() => {
+            return removeLegacyProtectedRecords().then((removedCount) => {
               databaseReady = true;
+              if (removedCount) setMessage("Previous protected records were removed.", "success");
+              if (!localStorage.getItem(staffPinStorageKey)) {
+                staffPinConfigured = false;
+                customerPanel.hidden = true;
+                staffPanel.hidden = false;
+                createStaffPinForm.hidden = false;
+                unlockStaffPinForm.hidden = true;
+                updateModeSwitch("staff");
+              } else {
+                staffPinConfigured = true;
+                updateModeSwitch("customer");
+              }
               updateSaveButton();
             });
           })
