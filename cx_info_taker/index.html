@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0f172a">
     <title>JV Cabiao Electronics Shop | Item Intake</title>
     <style>
@@ -39,7 +39,7 @@
       .page {
         width: min(100% - 40px, 1040px);
         margin: 0 auto;
-        padding: 0 0 calc(64px + env(safe-area-inset-bottom, 0px));
+        padding: 0 0 64px;
       }
 
       header {
@@ -114,7 +114,7 @@
 
       .view-tab {
         display: flex;
-        min-height: 44px;
+        min-height: 42px;
         flex: 1;
         align-items: center;
         justify-content: center;
@@ -260,12 +260,6 @@
       .record-item { margin-top: 5px; color: var(--accent); font-size: 12px; font-weight: 600; }
       .record-agreement { margin-top: 5px; color: var(--muted); font-size: 11px; }
       .record-date { margin-top: 5px;       color: var(--muted); font-size: 11px; }
-      .record-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 10px;
-      }
       .delete-button {
         display: grid;
         width: 32px;
@@ -281,29 +275,21 @@
       .delete-button:hover { background: #3f2029; color: var(--red); }
 
       @media (max-width: 720px) {
-        .page {
-          width: min(100%, 520px);
-          padding-right: max(14px, env(safe-area-inset-right, 0px));
-          padding-left: max(14px, env(safe-area-inset-left, 0px));
-        }
+        .page { width: min(100% - 28px, 520px); }
         .header-inner {
           flex-direction: column;
           justify-content: center;
           gap: 4px;
-          width: min(100%, 520px);
-          padding: calc(12px + env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) 12px max(14px, env(safe-area-inset-left, 0px));
+          padding: 12px 20px;
         }
         .local-note { text-align: center; }
-        .intro { margin-top: 18px; padding-top: 1rem; }
+        .intro { padding-top: 1rem; }
       }
 
       @media (max-width: 390px) {
-        .page { width: 100%; }
+        .page { width: min(100% - 22px, 520px); }
         .local-note { max-width: none; line-height: 1.4; }
-        .view-tab { gap: 5px; padding-right: 6px; padding-left: 6px; font-size: 12px; white-space: nowrap; }
-        .panel-heading { align-items: flex-start; flex-direction: column; gap: 4px; padding: 16px; }
-        form { padding: 16px; }
-        .record-list { padding-right: 14px; padding-left: 14px; }
+        form { padding: 18px; }
       }
     </style>
   </head>
@@ -491,10 +477,7 @@
             textLink.href = `sms:${recipient}?body=${encodeURIComponent(textMessage)}`;
             textLink.textContent = "Text customer";
             textLink.setAttribute("aria-label", `Prepare a text message for ${record.name}`);
-            const actions = document.createElement("div");
-            actions.className = "record-actions";
-            actions.append(textLink);
-            details.append(customer, phone, item, agreement, date, actions);
+            details.append(customer, phone, item, agreement, date, textLink);
             const remove = document.createElement("button");
             remove.className = "delete-button";
             remove.type = "button";
@@ -526,15 +509,13 @@
           saveButton.disabled = true;
           setMessage("");
           try {
-            const recordToSave = {
+            await transaction("readwrite", (store) => store.add({
               name,
               phone,
               item,
               storageAgreement: agreementInput.checked,
               createdAt: Date.now()
-            };
-            console.log("Saving record:", recordToSave);
-            await transaction("readwrite", (store) => store.add(recordToSave));
+            }));
             await renderRecords();
             form.reset();
             setMessage("Item record saved. A text message is ready in Saved records.", "success");
