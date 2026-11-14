@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1524">
     <title>JV Cabiao Electronics Shop | Item Intake</title>
     <style>
       :root {
@@ -219,6 +219,18 @@
 
       .agreement strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 12px; }
       .agreement-copy { display: block; color: var(--muted); font-size: 12px; font-weight: 400; line-height: 1.5; }
+      .storage-duration {
+        display: inline-block;
+        margin: 0 2px;
+        padding: 1px 7px;
+        border: 1px solid rgb(56 189 248 / 28%);
+        border-radius: 999px;
+        background: rgb(56 189 248 / 12%);
+        color: #7dd3fc;
+        font-weight: 750;
+        line-height: 1.4;
+        white-space: nowrap;
+      }
 
       input[type="text"], input[type="tel"], input[type="password"], textarea {
         width: 100%;
@@ -350,6 +362,7 @@
       .delete-button:hover { background: #3f2029; color: var(--red); }
 
       @media (max-width: 720px) {
+        header { padding-top: max(env(safe-area-inset-top, 0px), 24px); }
         .page { width: min(100% - 28px, 520px); }
         .header-inner {
           flex-direction: column;
@@ -428,7 +441,7 @@
                 <input id="storage-agreement" name="storageAgreement" type="checkbox" required>
                 <span>
                   <strong>Storage Agreement <span class="required">*</span></strong>
-                  <span class="agreement-copy">I understand this item will be stored free of charge for up to 7 days.</span>
+                  <span class="agreement-copy">I understand this item will be stored free of charge for up to <span class="storage-duration">7 days</span>.</span>
                 </span>
               </label>
             </div>
