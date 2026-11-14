@@ -25,7 +25,6 @@
 
       body {
         margin: 0;
-        min-width: 320px;
         overflow-x: clip;
         background:
           radial-gradient(ellipse at 50% -230px, rgb(56 189 248 / 12%), transparent 68%),
@@ -369,7 +368,7 @@
         .brand { gap: 10px; }
         .brand-mark { width: 38px; height: 38px; }
         .brand-name { font-size: 15px; }
-        .panel-heading { padding: 17px 18px; }
+        .panel-heading { align-items: flex-start; flex-direction: column; gap: 4px; padding: 17px 18px; }
         form, .staff-access { padding: 19px; }
         .record-list { padding: 10px 12px 14px; }
         .record { padding: 13px; }
@@ -529,7 +528,7 @@
         }
 
         successDialogOkButton.addEventListener("click", () => successDialog.close());
-        successDialog.addEventListener("close", () => nameInput.focus());
+        successDialog.addEventListener("close", () => requestAnimationFrame(() => nameInput.focus()));
 
         function updateModeSwitch(mode) {
           const staffMode = mode === "staff";
