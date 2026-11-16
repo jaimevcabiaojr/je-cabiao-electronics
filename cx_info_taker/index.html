@@ -502,7 +502,7 @@
                 <input id="storage-agreement" name="storageAgreement" type="checkbox" required>
                 <span>
                   <strong>Storage Agreement <span class="required">*</span></strong>
-                  <span class="agreement-copy">I understand that my item will be stored free of charge for up to <span class="storage-duration">7 days</span> (one week) from the date I drop it off, including the repair period. I agree to pick it up within this time. After this period, storage fees may apply, and items left unclaimed may be recycled or sold to recover costs.</span>
+                  <span class="agreement-copy">I agree to pick up my item within <span class="storage-duration">7 days</span> of drop-off, including the repair period. Storage is free during this time; after 7 days, fees may apply, and unclaimed items may be recycled or sold to recover costs.</span>
                 </span>
               </label>
             </div>
@@ -571,7 +571,7 @@
         <div class="success-dialog-check" aria-hidden="true">✓</div>
         <h2 id="success-dialog-title">Thank you!</h2>
         <p id="success-dialog-message"></p>
-        <button class="button primary" id="success-dialog-ok" type="button">OK, start again</button>
+        <a class="button primary" id="success-dialog-send-sms" href="#">Send text to customer</a>
       </div>
     </dialog>
 
@@ -589,7 +589,7 @@
         const introDescription = document.getElementById("intro-description");
         const successDialog = document.getElementById("success-dialog");
         const successDialogMessage = document.getElementById("success-dialog-message");
-        const successDialogOkButton = document.getElementById("success-dialog-ok");
+        const successDialogSendSmsLink = document.getElementById("success-dialog-send-sms");
         const customerPanel = document.getElementById("customer-panel");
         const staffPanel = document.getElementById("staff-panel");
         const pageTools = document.getElementById("page-tools");
@@ -630,7 +630,7 @@
             : "");
         }
 
-        successDialogOkButton.addEventListener("click", () => successDialog.close());
+        successDialogSendSmsLink.addEventListener("click", () => successDialog.close());
         successDialog.addEventListener("close", () => requestAnimationFrame(() => nameInput.focus()));
 
         function updateModeSwitch(mode) {
@@ -759,6 +759,12 @@
           return new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(date);
         }
 
+        function createCustomerTextMessage(record) {
+          const formattedDate = new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" })
+            .format(new Date(record.createdAt));
+          return `Hello ${record.name}, greetings from J V Cabiao Electronics!\n\nWe received your ${record.item || "item"} on ${formattedDate}. Your check-up is free, and we’ll message you with the results once it’s done.\n\nStorage: Free for up to 7 days from drop-off, including repair time. Time spent waiting for spare parts to arrive is not counted. After that, storage fees may apply, and unclaimed items may be recycled or sold.\n\nPlease reply “OK” to confirm and agree to these terms.\n\nThank you, and God bless!`;
+        }
+
         async function renderRecords() {
           const records = await transaction("readonly", (store) => store.getAll());
           records.sort((a, b) => b.createdAt - a.createdAt);
@@ -826,12 +832,10 @@
               const date = document.createElement("div");
               date.className = "record-date";
               date.textContent = formatDate(new Date(record.createdAt));
-              const formattedDate = new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" }).format(new Date(record.createdAt));
-              const textMessage = `Greetings from J V Cabiao Electronics!\n\nWe received your ${record.item || "item"} at our main shop on ${formattedDate}. As a reminder, your unit comes with 7 days of free storage.\n\nKindly reply with your name or nickname so we can verify and link this number to your service record. We will update you with the diagnostic results as soon as the check-up is finished.\n\nThank you for trusting us, and God bless!`;
               const recipient = record.phone.replace(/[^\d+]/g, "");
               const textLink = document.createElement("a");
               textLink.className = "button primary";
-              textLink.href = `sms:${recipient}?body=${encodeURIComponent(textMessage)}`;
+              textLink.href = `sms:${recipient}`;
               textLink.textContent = "Text customer";
               textLink.setAttribute("aria-label", `Prepare a text message for ${record.name}`);
               const copyButton = document.createElement("button");
@@ -993,16 +997,19 @@
           saveButton.disabled = true;
           setMessage("");
           try {
-            await transaction("readwrite", (store) => store.add({
+            const record = {
               name,
               phone,
               item,
               issue: issueInput.value.trim(),
               storageAgreement: agreementInput.checked,
               createdAt: Date.now()
-            }));
+            };
+            await transaction("readwrite", (store) => store.add(record));
+            const recipient = record.phone.replace(/[^\d+]/g, "");
+            successDialogSendSmsLink.href = `sms:${recipient}?body=${encodeURIComponent(createCustomerTextMessage(record))}`;
             form.reset();
-            successDialogMessage.textContent = `Thank you, ${name}! Your item record has been saved. Please wait for a text from us.`;
+            successDialogMessage.textContent = `Thank you, ${name}! Your item record has been saved. Use the button below to prepare a text for this customer.`;
             successDialog.showModal();
           } catch (error) {
             setMessage(`Could not save this record: ${error.message}`, "error");
