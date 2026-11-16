@@ -119,6 +119,8 @@
         margin: 24px auto 16px;
       }
 
+      .page-tools[hidden] { display: none; }
+
       .mode-switch-label {
         color: var(--muted);
         font-size: 10px;
@@ -230,7 +232,7 @@
         white-space: nowrap;
       }
 
-      input[type="text"], input[type="tel"], input[type="password"], textarea {
+      input[type="text"], input[type="tel"], input[type="password"], input[type="search"], textarea {
         width: 100%;
         padding: 0 14px;
         border: 1px solid #30445e;
@@ -241,12 +243,13 @@
         transition: border-color .16s, box-shadow .16s, background .16s;
       }
 
-      input[type="text"], input[type="tel"], input[type="password"] { height: 48px; }
+      input[type="text"], input[type="tel"], input[type="password"], input[type="search"] { height: 48px; }
       textarea { min-height: 104px; padding-top: 11px; padding-bottom: 11px; resize: vertical; }
       input:hover, textarea:hover { border-color: #47627f; }
       input:focus, textarea:focus { border-color: var(--accent); background: #0a192a; box-shadow: 0 0 0 4px rgb(56 189 248 / 12%); }
       input::placeholder, textarea::placeholder { color: #71839b; }
       .help { margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+      .staff-search { margin: 18px 20px 0; }
 
       .button {
         display: inline-flex;
@@ -266,6 +269,19 @@
       }
 
       .button:hover { transform: translateY(-1px); border-color: #5b7695; background: #213953; }
+      .back-customer-button {
+        border-color: rgb(56 189 248 / 32%);
+        background: linear-gradient(135deg, rgb(56 189 248 / 13%), rgb(14 165 233 / 9%));
+        color: #bae6fd;
+        font-weight: 700;
+      }
+      .back-customer-button:hover {
+        border-color: rgb(56 189 248 / 60%);
+        background: linear-gradient(135deg, rgb(56 189 248 / 22%), rgb(14 165 233 / 16%));
+        box-shadow: 0 4px 14px rgb(14 165 233 / 14%);
+      }
+      .back-customer-button:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 2px; }
+      .back-customer-button svg { width: 16px; height: 16px; flex: 0 0 auto; }
       .primary {
         border-color: transparent;
         background: linear-gradient(135deg, #55caf8, #0ea5e9);
@@ -324,6 +340,23 @@
       .staff-access .field { max-width: 360px; }
       .record-list { padding: 12px 20px 20px; }
       .empty-state { padding: 38px 16px; color: var(--muted); font-size: 13px; line-height: 1.7; text-align: center; }
+      .record-date-group {
+        margin-bottom: 14px;
+        overflow: hidden;
+        border: 1px solid rgb(148 163 184 / 14%);
+        border-radius: 13px;
+        background: rgb(255 255 255 / 2%);
+      }
+      .record-date-group summary {
+        padding: 13px 15px;
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .record-date-group[open] > summary { border-bottom: 1px solid rgb(148 163 184 / 12%); }
+      .record-date-group > .record { margin: 10px 12px; }
+      .record-date-group > .record:last-child { margin-bottom: 12px; }
       .record {
         display: grid;
         grid-template-columns: minmax(0, 1fr) 32px;
@@ -385,6 +418,7 @@
         form, .staff-access { padding: 19px; }
         .record-list { padding: 10px 12px 14px; }
         .record { padding: 13px; }
+        .staff-search { margin: 14px 12px 0; }
       }
     </style>
   </head>
@@ -451,8 +485,8 @@
             </div>
             <div class="field">
               <label for="customer-phone">Cellphone number <span class="required">*</span></label>
-              <input id="customer-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. +63 0999 1234567" required maxlength="30">
-              <p class="help">Include the country code if needed.</p>
+              <input id="customer-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 09XX XXX XXXX" required maxlength="30">
+              <p class="help">Enter a Philippine mobile number starting with 09 or +639.</p>
             </div>
             <div class="field">
               <label for="item-name">Appliance / item <span class="required">*</span></label>
@@ -468,7 +502,7 @@
                 <input id="storage-agreement" name="storageAgreement" type="checkbox" required>
                 <span>
                   <strong>Storage Agreement <span class="required">*</span></strong>
-                  <span class="agreement-copy">I understand this item will be stored free of charge for up to <span class="storage-duration">7 days</span>.</span>
+                  <span class="agreement-copy">I understand that my item will be stored free of charge for up to <span class="storage-duration">7 days</span> (one week) from the date I drop it off, including the repair period. I agree to pick it up within this time. After this period, storage fees may apply, and items left unclaimed may be recycled or sold to recover costs.</span>
                 </span>
               </label>
             </div>
@@ -479,6 +513,13 @@
         <section class="panel" id="staff-panel" hidden>
           <div class="panel-heading">
             <h2 id="staff-panel-title">Staff records</h2>
+            <button class="button back-customer-button" id="close-staff-view" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+              </svg>
+              <span>Back to customer view</span>
+            </button>
           </div>
           <div class="staff-access" id="staff-access">
             <form id="create-staff-pin-form" hidden>
@@ -506,13 +547,17 @@
               <p class="message" id="unlock-pin-message" role="status"></p>
             </form>
           </div>
+          <div class="field staff-search" id="staff-search" hidden>
+            <label for="staff-record-search">Search records</label>
+            <input id="staff-record-search" type="search" autocomplete="off" placeholder="Customer, phone, item, or issue">
+          </div>
           <div class="record-list" id="record-list" aria-live="polite" hidden>
             <div class="empty-state">No records yet.<br>Saved items will appear here.</div>
           </div>
         </section>
       </div>
 
-      <div class="page-tools">
+      <div class="page-tools" id="page-tools" hidden>
         <span class="mode-switch-label">Switch view</span>
         <div class="mode-switch" role="group" aria-label="Choose view">
           <button id="customer-mode-button" type="button" aria-pressed="true">Customer</button>
@@ -547,8 +592,10 @@
         const successDialogOkButton = document.getElementById("success-dialog-ok");
         const customerPanel = document.getElementById("customer-panel");
         const staffPanel = document.getElementById("staff-panel");
+        const pageTools = document.getElementById("page-tools");
         const customerModeButton = document.getElementById("customer-mode-button");
         const staffModeButton = document.getElementById("staff-mode-button");
+        const closeStaffViewButton = document.getElementById("close-staff-view");
         const staffAccess = document.getElementById("staff-access");
         const createStaffPinForm = document.getElementById("create-staff-pin-form");
         const unlockStaffPinForm = document.getElementById("unlock-staff-pin-form");
@@ -557,14 +604,30 @@
         const saveButton = document.getElementById("save-button");
         const message = document.getElementById("form-message");
         const recordList = document.getElementById("record-list");
+        const staffSearch = document.getElementById("staff-search");
+        const staffRecordSearch = document.getElementById("staff-record-search");
         const staffPinStorageKey = `${databaseName}-staff-pin`;
         let database;
         let databaseReady = false;
         let staffPinConfigured = false;
+        let staffRevealTapCount = 0;
+        let staffRevealTapTimer = null;
 
         function setMessage(text, kind = "") {
           message.textContent = text;
           message.className = `message${kind ? ` ${kind}` : ""}`;
+        }
+
+        function isValidPhilippineMobileNumber(value) {
+          const compact = value.trim().replace(/[\s()-]/g, "");
+          return /^(?:09\d{9}|\+639\d{9})$/.test(compact);
+        }
+
+        function validatePhoneInput() {
+          const phone = phoneInput.value.trim();
+          phoneInput.setCustomValidity(phone && !isValidPhilippineMobileNumber(phone)
+            ? "Enter a valid Philippine mobile number, such as 09XX XXX XXXX or +63 9XX XXX XXXX."
+            : "");
         }
 
         successDialogOkButton.addEventListener("click", () => successDialog.close());
@@ -574,12 +637,48 @@
           const staffMode = mode === "staff";
           customerModeButton.setAttribute("aria-pressed", String(!staffMode));
           staffModeButton.setAttribute("aria-pressed", String(staffMode));
-          customerModeButton.disabled = !staffPinConfigured;
           introTitle.textContent = staffMode ? "Saved item records" : "Job Order Form";
           introDescription.textContent = staffMode
             ? "View and manage records saved on this device."
             : "Enter the customer's contact details and appliance or item.";
         }
+
+        function hideStaffPageTools() {
+          pageTools.hidden = true;
+          staffRevealTapCount = 0;
+          clearTimeout(staffRevealTapTimer);
+        }
+
+        function showCustomerView() {
+          setMessage("");
+          recordList.replaceChildren();
+          recordList.hidden = true;
+          staffAccess.hidden = false;
+          createStaffPinForm.hidden = true;
+          unlockStaffPinForm.hidden = true;
+          staffPanel.hidden = true;
+          customerPanel.hidden = false;
+          staffSearch.hidden = true;
+          staffRecordSearch.value = "";
+          updateModeSwitch("customer");
+          hideStaffPageTools();
+        }
+
+        document.addEventListener("click", (event) => {
+          if (!pageTools.hidden || customerPanel.hidden || pageTools.contains(event.target) || closeStaffViewButton.contains(event.target)) return;
+
+          staffRevealTapCount += 1;
+          clearTimeout(staffRevealTapTimer);
+          staffRevealTapTimer = setTimeout(() => {
+            staffRevealTapCount = 0;
+          }, 3000);
+
+          if (staffRevealTapCount === 5) {
+            staffRevealTapCount = 0;
+            clearTimeout(staffRevealTapTimer);
+            staffModeButton.click();
+          }
+        });
 
         function updateSaveButton() {
           saveButton.disabled = !databaseReady || !agreementInput.checked;
@@ -663,6 +762,11 @@
         async function renderRecords() {
           const records = await transaction("readonly", (store) => store.getAll());
           records.sort((a, b) => b.createdAt - a.createdAt);
+          const searchTerm = staffRecordSearch.value.trim().toLowerCase();
+          const matchingRecords = records.filter((record) =>
+            [record.name, record.phone, record.item, record.issue]
+              .some((value) => String(value ?? "").toLowerCase().includes(searchTerm))
+          );
           recordList.replaceChildren();
           recordList.hidden = false;
           if (!records.length) {
@@ -672,83 +776,110 @@
             recordList.append(empty);
             return;
           }
+          if (!matchingRecords.length) {
+            const empty = document.createElement("div");
+            empty.className = "empty-state";
+            empty.textContent = "No matching records.";
+            recordList.append(empty);
+            return;
+          }
 
-          for (const record of records) {
-            const row = document.createElement("article");
-            row.className = "record";
-            const details = document.createElement("div");
-            const customer = document.createElement("div");
-            customer.className = "record-name";
-            customer.textContent = record.name;
-            const phone = document.createElement("div");
-            phone.className = "record-phone";
-            phone.textContent = record.phone;
-            const item = document.createElement("div");
-            item.className = "record-item";
-            item.textContent = `Appliance / item: ${record.item || "Not specified"}`;
-            const issue = document.createElement("div");
-            issue.className = "record-issue";
-            issue.textContent = `Issue: ${record.issue || "Not provided"}`;
-            const agreement = document.createElement("div");
-            agreement.className = "record-agreement";
-            agreement.textContent = record.storageAgreement
-              ? "Storage agreement accepted: free for up to 7 days"
-              : "Storage agreement: Not recorded";
-            const date = document.createElement("div");
-            date.className = "record-date";
-            date.textContent = formatDate(new Date(record.createdAt));
-            const formattedDate = new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" }).format(new Date(record.createdAt));
-            const textMessage = `Greetings from J V Cabiao Electronics!\n\nWe received your ${record.item || "item"} at our main shop on ${formattedDate}. As a reminder, your unit comes with 7 days of free storage.\n\nKindly reply with your name or nickname so we can verify and link this number to your service record. We will update you with the diagnostic results as soon as the check-up is finished.\n\nThank you for trusting us, and God bless!`;
-            const recipient = record.phone.replace(/[^\d+]/g, "");
-            const textLink = document.createElement("a");
-            textLink.className = "button primary";
-            textLink.href = `sms:${recipient}?body=${encodeURIComponent(textMessage)}`;
-            textLink.textContent = "Text customer";
-            textLink.setAttribute("aria-label", `Prepare a text message for ${record.name}`);
-            const copyButton = document.createElement("button");
-            copyButton.className = "button";
-            copyButton.type = "button";
-            copyButton.textContent = "Copy record";
-            copyButton.setAttribute("aria-label", `Copy record for ${record.name}`);
-            copyButton.addEventListener("click", async () => {
-              try {
-                if (!navigator.clipboard?.writeText) {
-                  throw new Error("Clipboard access is unavailable in this browser.");
+          const recordsByDate = new Map();
+          for (const record of matchingRecords) {
+            const date = new Date(record.createdAt);
+            const dateKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+            if (!recordsByDate.has(dateKey)) recordsByDate.set(dateKey, []);
+            recordsByDate.get(dateKey).push(record);
+          }
+
+          for (const groupedRecords of recordsByDate.values()) {
+            const dateGroup = document.createElement("details");
+            dateGroup.className = "record-date-group";
+            dateGroup.open = true;
+            const summary = document.createElement("summary");
+            const groupDate = new Date(groupedRecords[0].createdAt);
+            const formattedGroupDate = new Intl.DateTimeFormat(undefined, { dateStyle: "full" }).format(groupDate);
+            summary.textContent = `${formattedGroupDate} (${groupedRecords.length})`;
+            dateGroup.append(summary);
+
+            for (const record of groupedRecords) {
+              const row = document.createElement("article");
+              row.className = "record";
+              const details = document.createElement("div");
+              const customer = document.createElement("div");
+              customer.className = "record-name";
+              customer.textContent = record.name;
+              const phone = document.createElement("div");
+              phone.className = "record-phone";
+              phone.textContent = record.phone;
+              const item = document.createElement("div");
+              item.className = "record-item";
+              item.textContent = `Appliance / item: ${record.item || "Not specified"}`;
+              const issue = document.createElement("div");
+              issue.className = "record-issue";
+              issue.textContent = `Issue: ${record.issue || "Not provided"}`;
+              const agreement = document.createElement("div");
+              agreement.className = "record-agreement";
+              agreement.textContent = record.storageAgreement
+                ? "Storage agreement accepted: free for up to 7 days"
+                : "Storage agreement: Not recorded";
+              const date = document.createElement("div");
+              date.className = "record-date";
+              date.textContent = formatDate(new Date(record.createdAt));
+              const formattedDate = new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" }).format(new Date(record.createdAt));
+              const textMessage = `Greetings from J V Cabiao Electronics!\n\nWe received your ${record.item || "item"} at our main shop on ${formattedDate}. As a reminder, your unit comes with 7 days of free storage.\n\nKindly reply with your name or nickname so we can verify and link this number to your service record. We will update you with the diagnostic results as soon as the check-up is finished.\n\nThank you for trusting us, and God bless!`;
+              const recipient = record.phone.replace(/[^\d+]/g, "");
+              const textLink = document.createElement("a");
+              textLink.className = "button primary";
+              textLink.href = `sms:${recipient}?body=${encodeURIComponent(textMessage)}`;
+              textLink.textContent = "Text customer";
+              textLink.setAttribute("aria-label", `Prepare a text message for ${record.name}`);
+              const copyButton = document.createElement("button");
+              copyButton.className = "button";
+              copyButton.type = "button";
+              copyButton.textContent = "Copy record";
+              copyButton.setAttribute("aria-label", `Copy record for ${record.name}`);
+              copyButton.addEventListener("click", async () => {
+                try {
+                  if (!navigator.clipboard?.writeText) {
+                    throw new Error("Clipboard access is unavailable in this browser.");
+                  }
+                  const copiedRecord = [
+                    `Customer: ${record.name}`,
+                    `Cellphone: ${record.phone}`,
+                    `Item: ${record.item || "Not specified"}`,
+                    `Issue: ${record.issue || "Not provided"}`,
+                    `Storage agreement: ${record.storageAgreement ? "Accepted (free storage up to 7 days)" : "Not recorded"}`,
+                    `Received: ${formatDate(new Date(record.createdAt))}`
+                  ].join("\n");
+                  await navigator.clipboard.writeText(copiedRecord);
+                  setMessage(`Copied ${record.name}'s record to the clipboard.`, "success");
+                } catch (error) {
+                  setMessage(`Could not copy the record: ${error.message}`, "error");
                 }
-                const copiedRecord = [
-                  `Customer: ${record.name}`,
-                  `Cellphone: ${record.phone}`,
-                  `Item: ${record.item || "Not specified"}`,
-                  `Issue: ${record.issue || "Not provided"}`,
-                  `Storage agreement: ${record.storageAgreement ? "Accepted (free storage up to 7 days)" : "Not recorded"}`,
-                  `Received: ${formatDate(new Date(record.createdAt))}`
-                ].join("\n");
-                await navigator.clipboard.writeText(copiedRecord);
-                setMessage(`Copied ${record.name}'s record to the clipboard.`, "success");
-              } catch (error) {
-                setMessage(`Could not copy the record: ${error.message}`, "error");
-              }
-            });
-            const actions = document.createElement("div");
-            actions.className = "record-actions";
-            actions.append(copyButton, textLink);
-            details.append(customer, phone, item, issue, agreement, date, actions);
-            const remove = document.createElement("button");
-            remove.className = "delete-button";
-            remove.type = "button";
-            remove.title = `Delete record for ${record.name}`;
-            remove.setAttribute("aria-label", `Delete record for ${record.name}`);
-            remove.textContent = "×";
-            remove.addEventListener("click", async () => {
-              try {
-                await transaction("readwrite", (store) => store.delete(record.id));
-                await renderRecords();
-              } catch (error) {
-                setMessage(`Could not delete record: ${error.message}`, "error");
-              }
-            });
-            row.append(details, remove);
-            recordList.append(row);
+              });
+              const actions = document.createElement("div");
+              actions.className = "record-actions";
+              actions.append(copyButton, textLink);
+              details.append(customer, phone, item, issue, agreement, date, actions);
+              const remove = document.createElement("button");
+              remove.className = "delete-button";
+              remove.type = "button";
+              remove.title = `Delete record for ${record.name}`;
+              remove.setAttribute("aria-label", `Delete record for ${record.name}`);
+              remove.textContent = "×";
+              remove.addEventListener("click", async () => {
+                try {
+                  await transaction("readwrite", (store) => store.delete(record.id));
+                  await renderRecords();
+                } catch (error) {
+                  setMessage(`Could not delete record: ${error.message}`, "error");
+                }
+              });
+              row.append(details, remove);
+              dateGroup.append(row);
+            }
+            recordList.append(dateGroup);
           }
         }
 
@@ -758,9 +889,13 @@
           customerPanel.hidden = true;
           staffPanel.hidden = false;
           staffAccess.hidden = true;
+          staffSearch.hidden = false;
         }
 
         staffModeButton.addEventListener("click", () => {
+          hideStaffPageTools();
+          staffSearch.hidden = true;
+          staffRecordSearch.value = "";
           setMessage("");
           updateModeSwitch("staff");
           customerPanel.hidden = true;
@@ -780,18 +915,8 @@
           }
         });
 
-        customerModeButton.addEventListener("click", () => {
-          if (!staffPinConfigured) return;
-          setMessage("");
-          recordList.replaceChildren();
-          recordList.hidden = true;
-          staffAccess.hidden = false;
-          createStaffPinForm.hidden = true;
-          unlockStaffPinForm.hidden = true;
-          staffPanel.hidden = true;
-          customerPanel.hidden = false;
-          updateModeSwitch("customer");
-        });
+        customerModeButton.addEventListener("click", showCustomerView);
+        closeStaffViewButton.addEventListener("click", showCustomerView);
 
         createStaffPinForm.addEventListener("submit", async (event) => {
           event.preventDefault();
@@ -887,6 +1012,10 @@
         });
 
         agreementInput.addEventListener("change", updateSaveButton);
+        phoneInput.addEventListener("input", validatePhoneInput);
+        staffRecordSearch.addEventListener("input", () => {
+          renderRecords().catch((error) => setMessage(`Could not search records: ${error.message}`, "error"));
+        });
 
         openDatabase()
           .then((db) => {
@@ -894,17 +1023,8 @@
             return removeLegacyProtectedRecords().then((removedCount) => {
               databaseReady = true;
               if (removedCount) setMessage("Previous protected records were removed.", "success");
-              if (!localStorage.getItem(staffPinStorageKey)) {
-                staffPinConfigured = false;
-                customerPanel.hidden = true;
-                staffPanel.hidden = false;
-                createStaffPinForm.hidden = false;
-                unlockStaffPinForm.hidden = true;
-                updateModeSwitch("staff");
-              } else {
-                staffPinConfigured = true;
-                updateModeSwitch("customer");
-              }
+              staffPinConfigured = localStorage.getItem(staffPinStorageKey) !== null;
+              updateModeSwitch("customer");
               updateSaveButton();
             });
           })
