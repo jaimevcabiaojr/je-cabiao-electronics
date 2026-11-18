@@ -467,7 +467,7 @@
     <main class="page">
       <section class="intro">
         <h1 id="intro-title">Job Order Form</h1>
-        <p id="intro-description">Enter the customer's contact details and appliance or item.</p>
+        <p id="intro-description">Enter the appliance or item details, then the customer's contact details.</p>
       </section>
 
       <p class="message" id="form-message" role="status"></p>
@@ -475,19 +475,10 @@
       <div class="layout">
         <section class="panel" id="customer-panel">
           <div class="panel-heading">
-            <h2 id="form-title">Customer &amp; item details</h2>
+            <h2 id="form-title">Item &amp; customer details</h2>
             <span class="step">All fields required</span>
           </div>
           <form id="intake-form">
-            <div class="field">
-              <label for="customer-name">Customer name <span class="required">*</span></label>
-              <input id="customer-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alex Morgan" required maxlength="100">
-            </div>
-            <div class="field">
-              <label for="customer-phone">Cellphone number <span class="required">*</span></label>
-              <input id="customer-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 09XX XXX XXXX" required maxlength="30">
-              <p class="help">Enter a Philippine mobile number starting with 09 or +639.</p>
-            </div>
             <div class="field">
               <label for="item-name">Appliance / item <span class="required">*</span></label>
               <input id="item-name" name="item" type="text" autocomplete="off" placeholder="e.g. Samsung TV, refrigerator" required maxlength="100">
@@ -496,6 +487,15 @@
               <label for="item-issue">Item issue</label>
               <textarea id="item-issue" name="issue" placeholder="Describe the problem or symptoms" maxlength="500"></textarea>
               <p class="help">Optional. Up to 500 characters.</p>
+            </div>
+            <div class="field">
+              <label for="customer-name">Customer name <span class="required">*</span></label>
+              <input id="customer-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alex Morgan" required maxlength="100">
+            </div>
+            <div class="field">
+              <label for="customer-phone">Cellphone number <span class="required">*</span></label>
+              <input id="customer-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 09XX XXX XXXX" required maxlength="30">
+              <p class="help">Enter a Philippine mobile number starting with 09 or +639.</p>
             </div>
             <div class="field">
               <label class="agreement" for="storage-agreement">
@@ -640,7 +640,7 @@
           introTitle.textContent = staffMode ? "Saved item records" : "Job Order Form";
           introDescription.textContent = staffMode
             ? "View and manage records saved on this device."
-            : "Enter the customer's contact details and appliance or item.";
+            : "Enter the appliance or item details, then the customer's contact details.";
         }
 
         function hideStaffPageTools() {
